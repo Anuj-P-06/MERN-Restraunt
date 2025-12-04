@@ -18,3 +18,7 @@ authRoutes.get("/profile", protect, getProfile);
 authRoutes.get("/is-auth", protect, isAuth);
 
 export default authRoutes;
+
+
+
+    
