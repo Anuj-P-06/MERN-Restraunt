@@ -2,7 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
-import { connectDB} from "./config/config.db.js"
+import { connectDB } from "./config/config.db.js"
+import authRoutes from './routes/authRoutes.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -26,6 +27,8 @@ const PORT = process.env.PORT || 5000;
 app.get("/",(req,res) => {
     res.send('Hello from the server')
 });
+
+app.use('/api/auth',authRoutes)
 
 app.listen(PORT, () =>{
     console.log(`Server is running on port ${PORT}`)

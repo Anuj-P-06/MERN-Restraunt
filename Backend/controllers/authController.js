@@ -21,25 +21,27 @@ const generateToken = (res,payload) => {
 }
 
 // Register user
-export const registerUser = async(req,res) => {
-    try{
-        const {name,email,password} = req.body;
-        if(!name || !email || !password ){
-            return res.json ({message:"please fill all the fields", success:false})
-        }
-        const existingUser = await User.find({email});
-        if(existingUser){
-            return res.json({message:'User already exists',success:false})
-        }
-        const hashedPassword = await bcrypt.hash(password,10)
-        const user = await User.create({name,email,password: hashedPassword})
-        return res.json({message:"User registered successfully", success:true})
+export const registerUser = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res.json({
+        message: "Please fill all the fields",
+        success: false,
+      });
     }
-    catch (error){
-        console.log(error.message)
-        return res.json({message:'Internal server error',success:false})
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.json({ message: "User already exists", success: false });
     }
-}
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ name, email, password: hashedPassword });
+    return res.json({ message: "User registered successfully", success: true });
+  } catch (error) {
+    console.log(error.message);
+    return res.json({ message: "Internal server error", success: false });
+  }
+};
 
 // For user login
 export const loginUser = async(req,res)=>{
