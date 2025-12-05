@@ -39,7 +39,6 @@ export const getAllCategories = async (req, res) => {
     res.status(200).json({ success: true, categories });
   } catch (error) {
     console.log(error);
-
     return res.json({ message: "Internal server error", success: false });
   }
 };
@@ -78,6 +77,7 @@ export const deleteCategory = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Category deleted" });
   } catch (error) {
+    console.log(error)
     return res.json({ message: "Internal server error", success: false });
   }
 };
