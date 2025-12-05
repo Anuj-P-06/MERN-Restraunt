@@ -7,7 +7,7 @@ import {
   getProfile
 } 
 from "../controllers/authController.js";
-import { protect } from '../middleware/authMiddleware.js'
+import { protect } from '../middlewares/authMiddleware.js'
 
 const authRoutes = express.Router();
 
