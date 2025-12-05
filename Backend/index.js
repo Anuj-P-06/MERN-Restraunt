@@ -39,3 +39,5 @@ app.use('/api/category',categoryRoutes)
 app.listen(PORT, () =>{
     console.log(`Server is running on port ${PORT}`)
 })
+
+console.log("This message is just to test braching issue")
