@@ -1,4 +1,4 @@
-import Menu from "../models/menuModel.js";
+import Menu from "./models/menuModel.js";
 import {v2 as cloudinary} from "cloudinary";
 
 export const addMenuItem=async(req,res)=>{
@@ -51,12 +51,11 @@ export const updateMenuItem=async(req,res)=>{
                menuItem.image=result.secure_url;
 
       }
-    if (name) menuItem.name = name;
+       if (name) menuItem.name = name;
     if (description) menuItem.description = description;
-    
     if (price) menuItem.price = price;
     if (category) menuItem.category = category;
-    if (isAvailable !== undefined) menuItem.isAvailable = isAvailable;
+      if (isAvailable !== undefined) menuItem.isAvailable = isAvailable;
 
       await menuItem.save();
         res
