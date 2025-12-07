@@ -1,5 +1,5 @@
-import Cart from "../models/cartModel.js";
-import Menu from "../models/menuModel.js";
+import Cart from "./models/cartModel.js";
+import Menu from "./models/menuModel.js";
 export const addToCart = async (req, res) => {
   try {
     const { menuId, quantity } = req.body;
