@@ -35,11 +35,12 @@ app.get("/",(req,res) => {
 
 app.use('/api/auth',authRoutes)
 app.use('/api/category',categoryRoutes)
+app.use("/api/menu", menuRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/order", orderRoutes);
+app.use("/api/booking", bookingRoutes);
 
 app.listen(PORT, () =>{
     console.log(`Server is running on port ${PORT}`)
 })
 
-console.log("This message is just to test braching issue")
-console.log("This message is just to test braching issue")
-console.log("This message is just to test braching issue")
