@@ -10,4 +10,6 @@
      - Fixed the Image upload issue by importing dotenv in cloudinary.js to properly import keys.
      
 7/12 - Fixed cloudinary import issue.
-9/7 - Items from menu were not adding into cart.
+
+9/7 - Issue: Cart addition failed because the controller expected menuId but the request body was sending menuItemId, causing Menu.findById() to receive undefined.
+Fix: Updated controller to use menuItemId consistently in the request body and database lookup.
