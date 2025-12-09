@@ -10,3 +10,4 @@
      - Fixed the Image upload issue by importing dotenv in cloudinary.js to properly import keys.
      
 7/12 - Fixed cloudinary import issue.
+9/7 - Items from menu were not adding into cart.
