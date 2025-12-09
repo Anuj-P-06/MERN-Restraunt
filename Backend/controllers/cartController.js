@@ -1,5 +1,5 @@
-import Cart from "./models/cartModel.js";
-import Menu from "./models/menuModel.js";
+import Cart from "../models/cartModel.js";
+import Menu from "../models/menuModel.js";
 export const addToCart = async (req, res) => {
   try {
     const { menuId, quantity } = req.body;
@@ -19,7 +19,8 @@ export const addToCart = async (req, res) => {
 
     if (existingItem) {
       existingItem.quantity += quantity;
-    } else {
+    } 
+    else {
       cart.items.push({ menuItem: menuId, quantity });
     }
 
@@ -27,7 +28,8 @@ export const addToCart = async (req, res) => {
     res
       .status(200)
       .json({ message: "Item added to cart", success: true, cart });
-  } catch (error) {
+  } 
+  catch (error) {
     console.log(error);
     return res.json({ message: "Internal server error", success: false });
   }
@@ -40,7 +42,8 @@ export const getCart = async (req, res) => {
     const cart = await Cart.findOne({ user: id }).populate("items.menuItem");
     if (!cart) return res.status(200).json({ items: [] });
     res.status(200).json({ cart, success: true });
-  } catch (error) {
+  } 
+  catch (error) {
     console.log(error);
     return res.json({ message: "Internal server error", success: false });
   }
@@ -58,7 +61,8 @@ export const removeFromCart = async (req, res) => {
     );
     await cart.save();
     res.status(200).json({ message: "Item removed from cart", success: true });
-  } catch (error) {
+  } 
+  catch (error) {
     console.log(error);
     return res.json({ message: "Internal server error", success: false });
   }

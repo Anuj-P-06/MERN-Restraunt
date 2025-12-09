@@ -3,11 +3,15 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import { connectDB } from "./config/config.db.js"
-import authRoutes from './routes/authRoutes.js'
-import categoryRoutes from "./routes/categoryRoutes.js"
-import connectCloudinary from "./config/cloudinary.js";
+import authRoutes from "./routes/authRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
+import menuRoutes from "./routes/menuRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import bookingRoutes from "./routes/bookingRoutes.js";
 import dotenv from 'dotenv'
 dotenv.config()
+import connectCloudinary from './config/cloudinary.js'
 
 
 const app = express();
