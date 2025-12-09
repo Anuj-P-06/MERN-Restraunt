@@ -1,5 +1,5 @@
 import Menu from "./models/menuModel.js";
-import {v2 as cloudinary} from "cloudinary.js";
+import {v2 as cloudinary} from "cloudinary";
 
 export const addMenuItem=async(req,res)=>{
    try {
