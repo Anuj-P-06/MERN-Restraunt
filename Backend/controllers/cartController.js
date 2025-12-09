@@ -2,9 +2,9 @@ import Cart from "../models/cartModel.js";
 import Menu from "../models/menuModel.js";
 export const addToCart = async (req, res) => {
   try {
-    const { menuId, quantity } = req.body;
+    const { menuItemId, quantity } = req.body;
     const { id } = req.user;
-    const menuItem = await Menu.findById(menuId);
+    const menuItem = await Menu.findById(menuItemId);
     if (!menuItem)
       return res.status(404).json({ message: "Menu item not found" });
 
@@ -14,14 +14,14 @@ export const addToCart = async (req, res) => {
     }
 
     const existingItem = cart.items.find(
-      (item) => item.menuItem.toString() === menuId
+      (item) => item.menuItem.toString() === menuItemId
     );
 
     if (existingItem) {
       existingItem.quantity += quantity;
     } 
     else {
-      cart.items.push({ menuItem: menuId, quantity });
+      cart.items.push({ menuItem: menuItemId, quantity });
     }
 
     await cart.save();
