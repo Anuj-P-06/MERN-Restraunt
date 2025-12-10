@@ -13,3 +13,27 @@
 
 9/7 - Issue: Cart addition failed because the controller expected menuId but the request body was sending menuItemId, causing Menu.findById() to receive undefined.
 Fix: Updated controller to use menuItemId consistently in the request body and database lookup.
+
+10/7 - 
+Bug 1 — Invalid URL / Axios Failure
+
+Problem:
+Signup request crashed with TypeError: Failed to construct 'URL': Invalid URL.
+
+Root Cause:
+The .env variable VITE_BASE_URL included a trailing semicolon and spaces, resulting in an invalid Axios base URL and preventing requests from being constructed properly.
+
+Resolution:
+Corrected the environment variable to VITE_BASE_URL=http://localhost:5000 and restarted the Vite dev server to reload environment configs.
+
+Bug 2 — Toast Notifications Not Visible
+
+Problem:
+Successful registration triggered no visual feedback — toast messages were not rendered.
+
+Root Cause:
+react-hot-toast requires a globally mounted <Toaster /> component. The app was triggering toast events, but without a <Toaster /> in the component tree, nothing was displayed.
+
+Resolution:
+Mounted <Toaster /> in main.jsx (or App.jsx), enabling toast rendering across all routes.
+
