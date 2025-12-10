@@ -148,4 +148,13 @@ export const getProfile = async (req, res) => {
   }
 };
 
+export const isAuth = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const user = await User.findById(id).select("-password");
+    res.json({ success: true, user });
+  } catch (error) {
+    return res.json({ message: "Internal server error", success: false });
+  }
+};
 
