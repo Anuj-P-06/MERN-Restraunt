@@ -12,6 +12,7 @@ import bookingRoutes from "./routes/bookingRoutes.js";
 import dotenv from 'dotenv'
 dotenv.config()
 import connectCloudinary from './config/cloudinary.js'
+import { trusted } from 'mongoose'
 
 
 const app = express();
@@ -24,7 +25,10 @@ connectCloudinary()
 
 // Middlewares
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials: true // accept cookies coming frontend and check them
+}))
 app.use(morgan())
 app.use(cookieParser())
 

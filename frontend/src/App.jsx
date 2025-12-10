@@ -10,12 +10,14 @@ import MyOrders from "./pages/MyOrders";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Navbar from './components/Navbar';
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
 
   const adminPath = useLocation().pathname.includes("admin")
   return (
     <div>
+      <Toaster />
       {!adminPath && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />

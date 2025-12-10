@@ -17,24 +17,28 @@ const Signup = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // handle submit form
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const { data } = await axios.post("/api/auth/register", formData);
-      if (data.success) {
-        toast.success(data.message);
-        navigate("/login");
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error(error.response.data.message);
-    } finally {
-      setLoading(false);
+// handle submit form
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  console.log("FORM SUBMITTED");
+  try {
+    setLoading(true);
+    const { data } = await axios.post("/api/auth/register", formData);
+
+    if (data.success) {
+      toast.success(data.message);
+      navigate("/login");
+    } else {
+      toast.error(data.message);
     }
-  };
+  } catch (error) {
+    console.log("ERROR:", error); // always prints
+    toast.error(error.response?.data?.message || "Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="py-12 flex items-center justify-center">
