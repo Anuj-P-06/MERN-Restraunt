@@ -15,7 +15,7 @@
 Fix: Updated controller to use menuItemId consistently in the request body and database lookup.
 
 10/7 - 
-Bug 1 — Invalid URL / Axios Failure
+### Bug 1 — Invalid URL / Axios Failure
 
 Problem:
 Signup request crashed with TypeError: Failed to construct 'URL': Invalid URL.
@@ -26,7 +26,7 @@ The .env variable VITE_BASE_URL included a trailing semicolon and spaces, result
 Resolution:
 Corrected the environment variable to VITE_BASE_URL=http://localhost:5000 and restarted the Vite dev server to reload environment configs.
 
-Bug 2 — Toast Notifications Not Visible
+### Bug 2 — Toast Notifications Not Visible
 
 Problem:
 Successful registration triggered no visual feedback — toast messages were not rendered.
@@ -36,4 +36,18 @@ react-hot-toast requires a globally mounted <Toaster /> component. The app was t
 
 Resolution:
 Mounted <Toaster /> in main.jsx (or App.jsx), enabling toast rendering across all routes.
+
+### Bug 3 Issue:
+On clicking the Logout button, a toast appeared with only a checkmark icon but no message text.
+
+Cause:
+The backend /api/auth/logout endpoint returned a successful response, but the message field was missing or empty. The frontend was calling:
+
+toast.success(data.message);
+
+
+Since data.message was undefined, the toast displayed only the success icon without text.
+
+Fix:
+Ensured that the backend logout route returns a proper message field (e.g., "Logout successful"). With a valid message present, toast.success(data.message) now renders the expected text.
 
