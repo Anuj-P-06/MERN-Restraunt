@@ -1,13 +1,13 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { LockIcon, MailIcon, User2Icon } from "lucide-react";
+import { LockIcon, MailIcon } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { AppContext } from "../context/AppContext";
-const Signup = () => {
-  const { navigate, axios, loading, setLoading } = useContext(AppContext);
+import { AppContext } from "../../context/AppContext";
+const AdminLogin = () => {
+  const { navigate, loading, setLoading, axios, setAdmin } =
+    useContext(AppContext);
   // state for input value
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -17,55 +17,39 @@ const Signup = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-// handle submit form
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log("FORM SUBMITTED");
-  try {
-    setLoading(true);
-    const { data } = await axios.post("/api/auth/register", formData);
+  // handle submit form
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/auth/admin/login", formData);
 
-    if (data.success) {
-      toast.success(data.message);
-      navigate("/login");
-    } else {
-      toast.error(data.message);
+      if (data.success) {
+        localStorage.setItem("admin", JSON.stringify(data.admin));
+        setAdmin(true);
+        toast.success(data.message);
+        navigate("/admin");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.log("ERROR:", error); // always prints
-    toast.error(error.response?.data?.message || "Something went wrong");
-  } finally {
-    setLoading(false);
-  }
-};
-
-
+  };
   return (
-    <div className="py-12 flex items-center justify-center">
+    <div className=" py-12 flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="w-full sm:w-[350px] text-center border border-zinc-300/60 dark:border-zinc-700 rounded-2xl px-8 bg-white dark:bg-zinc-900"
+        className=" py-12 w-full sm:w-[350px] text-center border border-zinc-300/60 dark:border-zinc-700 rounded-2xl px-8 bg-white dark:bg-zinc-900"
       >
         <h1 className="text-zinc-900 dark:text-white text-3xl mt-10 font-medium">
-          Register
+          Login
         </h1>
         <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-2 pb-6">
-          Please sign up to continue
+          Please Login in to continue
         </p>
-
-        <div className="flex items-center w-full mt-4 bg-white dark:bg-zinc-800 border border-zinc-300/80 dark:border-zinc-700 h-12 rounded-full overflow-hidden pl-6 gap-2">
-          {/* User Icon */}
-          <User2Icon className="text-white" />
-          <input
-            type="text"
-            placeholder="Name"
-            className="bg-transparent text-zinc-600 dark:text-zinc-200 placeholder-zinc-500 dark:placeholder-zinc-400 outline-none text-sm w-full h-full"
-            name="name"
-            value={formData.name}
-            onChange={onChangeHandler}
-            required
-          />
-        </div>
 
         <div className="flex items-center w-full mt-4 bg-white dark:bg-zinc-800 border border-zinc-300/80 dark:border-zinc-700 h-12 rounded-full overflow-hidden pl-6 gap-2">
           {/* Mail Icon */}
@@ -99,18 +83,11 @@ const handleSubmit = async (e) => {
           type="submit"
           className="mt-2 w-full h-11 rounded-full text-white bg-orange-500 hover:opacity-90 transition-opacity cursor-pointer"
         >
-          {loading ? "Loading..." : "Register"}
+          {loading ? "Loading..." : "Login"}
         </button>
-
-        <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-3 mb-11">
-          Already have an account?
-          <Link to={"/login"} className="text-indigo-500 dark:text-indigo-400">
-            Login
-          </Link>
-        </p>
       </form>
     </div>
   );
 };
 
-export default Signup;
+export default AdminLogin;

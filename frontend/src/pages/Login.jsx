@@ -4,8 +4,7 @@ import { LockIcon, MailIcon, User2Icon } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { AppContext } from "../context/AppContext";
 const Login = () => {
-  const { navigate, loading, setLoading, axios, setUser } =
-    useContext(AppContext);
+  const { navigate, loading, setLoading, axios, setUser } = useContext(AppContext);
   // state for input value
   const [formData, setFormData] = useState({
     email: "",
@@ -95,4 +94,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login; 
