@@ -2,7 +2,9 @@
 2/12 - Started the project.
 
 3/12 - Packages installed and setup was done.
-4/12 - Authentication done, mongo db setup and collections were made. User registration, login and logout were setup
+
+4/12 - Authentication done, mongo db setup and collections were made. User registration, login and logout were setup.
+
 5/12 - Multer was implemented and middle ware were setup
 
 
