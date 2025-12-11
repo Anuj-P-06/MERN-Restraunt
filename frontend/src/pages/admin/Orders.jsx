@@ -28,16 +28,19 @@ const Orders = () => {
       const { data } = await axios.put(`/api/order/update-status/${orderId}`, {
         status: newStatus,
       });
-
+      
       if (data.success) {
         toast.success(data.message);
         fecthOrders();
-      } else {
+      } 
+      else {
         toast.error(data.message);
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error);
-    } finally {
+    } 
+    finally {
       setLoading(false);
     }
   };

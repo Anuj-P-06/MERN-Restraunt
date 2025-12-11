@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
+import MenuDetails from "./pages/MenuDetails";
 import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
@@ -26,7 +27,6 @@ import Dashboard from "./pages/admin/Dashboard";
 const App = () => {
   const adminPath = useLocation().pathname.includes("admin");
   const { admin } = useContext(AppContext);
-
   return (
     <div>
       <Toaster />
@@ -34,6 +34,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
+        <Route path="/menu-details/:id" element={<MenuDetails />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
