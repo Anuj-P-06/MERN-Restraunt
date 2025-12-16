@@ -75,3 +75,13 @@ The booking API was protected by authentication middleware and required req.user
 
 Resolution:
 Implemented a frontend authentication guard to block booking submission when the user is not logged in, displayed a login prompt, and redirected users to the login page before making the API call.
+
+
+
+### BUG 3: Admin-only category creation API returned 401 Unauthorized even after successful admin login.
+
+Root Cause:
+The protect authentication middleware was missing from the category routes, causing adminOnly to run without req.user being set.
+
+Resolution:
+Added protect middleware before adminOnly in all admin category routes, ensuring JWT verification occurs before role validation.
