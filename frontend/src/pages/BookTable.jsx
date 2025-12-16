@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 const BookTable = () => {
-  const { axios, navigate } = useContext(AppContext);
+  const { axios, navigate, user } = useContext(AppContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,20 +18,30 @@ const BookTable = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.post("/api/booking/create", formData);
-      if (data.success) {
-        toast.success(data.message);
-        navigate("/my-bookings");
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong!");
+  e.preventDefault();
+
+  // 🔐 LOGIN CHECK
+  if (!user) {
+    toast.error("Please login to book a table");
+    navigate("/login");
+    return;
+  }
+
+  try {
+    const { data } = await axios.post("/api/booking/create", formData);
+
+    if (data.success) {
+      toast.success(data.message);
+      navigate("/my-bookings");
+    } else {
+      toast.error(data.message);
     }
-  };
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong!");
+  }
+};
+
   return (
     <div className="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-2xl p-6">
       <h2 className="text-2xl font-semibold text-center mb-6">Book a Table</h2>
