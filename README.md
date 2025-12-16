@@ -55,6 +55,8 @@ Fix:
 Ensured that the backend logout route returns a proper message field (e.g., "Logout successful"). With a valid message present, toast.success(data.message) now renders the expected text.
 
 
+
+
 16/11 -
 ### Bug 1- Jest ES Module Import Error
 Problem: Jest tests failed with SyntaxError: Cannot use import statement outside a module, preventing any test execution.
