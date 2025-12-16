@@ -5,6 +5,8 @@ To check if user is logged in or not
 To check if logged in user is admin or not
 */
 export const protect = (req, res, next) => {
+    console.log("Protect middleware hit, token:", req.cookies.token);
+    console.log("AUTH COOKIES:", req.cookies);
     const token = req.cookies.token;
     if (!token) {
         return res.status(401).json({ message: "Not authorized", success: false });

@@ -1,11 +1,23 @@
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { ShoppingCart } from "lucide-react";
+import { toast } from "react-hot-toast";
+
 const MenuCard = ({ menu }) => {
-  const { navigate, addToCart } = useContext(AppContext);
+  const { navigate, addToCart, user } = useContext(AppContext);
+
+  const handleAddToCart = () => {
+    if (!user) {
+      toast.error("Please login to add items to cart");
+      return;
+    }
+
+    addToCart(menu._id);
+  };
+
   return (
-    <div lassName="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group">
-      {/* Image Section  */}
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group">
+      {/* Image Section */}
       <div
         onClick={() => navigate(`/menu-details/${menu._id}`)}
         className="relative h-56 overflow-hidden cursor-pointer"
@@ -15,9 +27,9 @@ const MenuCard = ({ menu }) => {
           alt={menu.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
-        {/* Overlay on hover */}
+
+        {/* Hover Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          {/* Availability Badge */}
           {!menu.isAvailable && (
             <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
               Unavailable
@@ -25,24 +37,25 @@ const MenuCard = ({ menu }) => {
           )}
         </div>
       </div>
-      {/* Content Section */}
 
+      {/* Content Section */}
       <div className="p-5">
         <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-1">
           {menu.name}
         </h3>
+
         <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
           {menu.description}
         </p>
 
-        {/* Price and Add to Cart */}
+        {/* Price + Action */}
         <div className="flex items-center justify-between mt-4">
-          <div>
-            <p className="text-2xl font-bold text-gray-900">${menu.price}</p>
-          </div>
+          <p className="text-2xl font-bold text-gray-900">
+            ₹{menu.price}
+          </p>
 
           <button
-            onClick={() => addToCart(menu._id)}
+            onClick={handleAddToCart}
             disabled={!menu.isAvailable}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold transition-all duration-300 ${
               menu.isAvailable
@@ -50,7 +63,7 @@ const MenuCard = ({ menu }) => {
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
           >
-            <ShoppingCart className="w-4 h-4" />{" "}
+            <ShoppingCart className="w-4 h-4" />
             <span className="text-sm">Add</span>
           </button>
         </div>
@@ -58,4 +71,5 @@ const MenuCard = ({ menu }) => {
     </div>
   );
 };
+
 export default MenuCard;
