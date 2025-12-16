@@ -102,9 +102,18 @@ Resolution:
 Called fetchMenus() inside AppContext’s useEffect to ensure menu data is fetched and populated before rendering.
 
 ### Bug 5 - Items not adding to cart
-Problem Frontend request to /api/cart/add returned 404 despite route and middleware being hit. Logs confirmed cookies and JWT were present, but controller didn’t respond correctly.
+Problem: Frontend request to /api/cart/add returned 404 despite route and middleware being hit. Logs confirmed cookies and JWT were present, but controller didn’t respond correctly.
 
-Reason Frontend sent menuItemId while backend expected menuId in the request body. This mismatch left menuId undefined, causing Menu.findById to fail silently.
+Reason: Frontend sent menuItemId while backend expected menuId in the request body. This mismatch left menuId undefined, causing Menu.findById to fail silently.
 
-Solution Align naming convention between frontend and backend request body fields. Updated frontend to send menuId (or backend to accept menuItemId), fixing the mismatch.
+Solution: Align naming convention between frontend and backend request body fields. Updated frontend to send menuId (or backend to accept menuItemId), fixing the mismatch.
 
+
+### Bug 6 - Items not deleting from the cart
+Problem: Frontend request to DELETE /api/cart/remove/:id returned 404 Not Found. Logs showed route and middleware were hit, but Express couldn’t match the handler.
+
+Reason: Backend route was defined as /remove without :menuId parameter. Controller expected req.params.menuId, causing mismatch between frontend URL and backend route.
+
+Solution: Update route to cartRoutes.delete("/remove/:menuId", protect, removeFromCart);. This aligns frontend call /api/cart/remove/:id with backend controller logic.
+
+Outcome: Delete request now matches correctly and returns 200 OK. Cart items are removed successfully and UI updates as expected.
