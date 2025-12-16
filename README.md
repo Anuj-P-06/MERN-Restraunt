@@ -64,3 +64,14 @@ Problem: Jest tests failed with SyntaxError: Cannot use import statement outside
 Root Cause: The backend used ES Modules (type: module), but Jest was running in CommonJS mode and could not parse import/export syntax by default.
 
 Resolution: Ran Jest with Node’s --experimental-vm-modules flag and updated the Jest configuration to support native ES Modules, enabling successful test execution and coverage reporting.
+
+### Bug 2- Axios 401 Unauthorized on Table Booking
+
+Problem:
+Table booking requests consistently failed with 401 Unauthorized, even though form data was valid and the API endpoint was reachable.
+
+Root Cause:
+The booking API was protected by authentication middleware and required req.user, but the frontend allowed unauthenticated users to submit the booking form, resulting in missing auth credentials.
+
+Resolution:
+Implemented a frontend authentication guard to block booking submission when the user is not logged in, displayed a login prompt, and redirected users to the login page before making the API call.
