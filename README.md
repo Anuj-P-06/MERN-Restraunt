@@ -88,3 +88,16 @@ JWT cookies were set with sameSite: "strict" which caused browsers to drop cooki
 
 Resolution:
 Updated cookie configuration to sameSite: "lax" for local development, corrected cookie expiration, and included role-based claims in JWT payloads to enable proper admin authorization.
+
+
+### Bug 4 — Menu items not displaying in frontend
+
+Problem:
+Menu items existed in MongoDB and the backend API returned data correctly, but the Menu page showed “0 dishes” with no errors in the console.
+
+Root Cause:
+The fetchMenus() function was defined in the global AppContext but was never invoked on application load, leaving the menus state empty.
+
+Resolution:
+Called fetchMenus() inside AppContext’s useEffect to ensure menu data is fetched and populated before rendering.
+
