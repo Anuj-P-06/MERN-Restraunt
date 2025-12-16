@@ -101,3 +101,10 @@ The fetchMenus() function was defined in the global AppContext but was never inv
 Resolution:
 Called fetchMenus() inside AppContext’s useEffect to ensure menu data is fetched and populated before rendering.
 
+### Bug 5 - Items not adding to cart
+Problem Frontend request to /api/cart/add returned 404 despite route and middleware being hit. Logs confirmed cookies and JWT were present, but controller didn’t respond correctly.
+
+Reason Frontend sent menuItemId while backend expected menuId in the request body. This mismatch left menuId undefined, causing Menu.findById to fail silently.
+
+Solution Align naming convention between frontend and backend request body fields. Updated frontend to send menuId (or backend to accept menuItemId), fixing the mismatch.
+
