@@ -78,10 +78,13 @@ Implemented a frontend authentication guard to block booking submission when the
 
 
 
-### BUG 3: Admin-only category creation API returned 401 Unauthorized even after successful admin login.
+### BUG 3: Admin APIs returning 401 despite successful login
+
+Problem:
+Admin-only APIs returned 401 Unauthorized even after successful authentication.
 
 Root Cause:
-The protect authentication middleware was missing from the category routes, causing adminOnly to run without req.user being set.
+JWT cookies were set with sameSite: "strict" which caused browsers to drop cookies during cross-port requests in local development. Additionally, admin JWTs lacked a role field required for authorization checks.
 
 Resolution:
-Added protect middleware before adminOnly in all admin category routes, ensuring JWT verification occurs before role validation.
+Updated cookie configuration to sameSite: "lax" for local development, corrected cookie expiration, and included role-based claims in JWT payloads to enable proper admin authorization.
