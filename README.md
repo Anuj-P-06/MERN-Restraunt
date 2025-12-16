@@ -54,3 +54,11 @@ Since data.message was undefined, the toast displayed only the success icon with
 Fix:
 Ensured that the backend logout route returns a proper message field (e.g., "Logout successful"). With a valid message present, toast.success(data.message) now renders the expected text.
 
+
+16/11 -
+### Bug 1- Jest ES Module Import Error
+Problem: Jest tests failed with SyntaxError: Cannot use import statement outside a module, preventing any test execution.
+
+Root Cause: The backend used ES Modules (type: module), but Jest was running in CommonJS mode and could not parse import/export syntax by default.
+
+Resolution: Ran Jest with Node’s --experimental-vm-modules flag and updated the Jest configuration to support native ES Modules, enabling successful test execution and coverage reporting.
