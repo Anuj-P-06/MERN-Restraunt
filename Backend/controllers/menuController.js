@@ -1,79 +1,165 @@
 import Menu from "../models/menuModel.js";
-import {v2 as cloudinary} from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
+import logger from "../config/logger.js";
 
-export const addMenuItem=async(req,res)=>{
-   try {
-      const {name,description,price,category}=req.body;
-       if (!name || !description || !price || !category || !req.file) {
-      return res
-        .status(400)
-        .json({ message: "All fields are required", success: false });
+/**
+ * ADD MENU ITEM
+ * Admin only
+ */
+export const addMenuItem = async (req, res, next) => {
+  try {
+    const { name, description, price, category } = req.body;
+
+    if (!name || !description || !price || !category || !req.file) {
+      logger.warn("Add menu failed: Missing required fields", {
+        body: req.body,
+        file: !!req.file,
+      });
+
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
     }
-     const result=await cloudinary.uploader.upload(req.file.path);
 
-     const newMenuItem=await Menu.create({
-      name,description,price,category,image:result.secure_url
-     })
-       res.status(201).json({
-      message: "Menu item added",
+    const result = await cloudinary.uploader.upload(req.file.path);
+
+    const newMenuItem = await Menu.create({
+      name,
+      description,
+      price,
+      category,
+      image: result.secure_url,
+    });
+
+    logger.info("Menu item created successfully", {
+      menuId: newMenuItem._id,
+      name: newMenuItem.name,
+    });
+
+    res.status(201).json({
       success: true,
+      message: "Menu item added",
       menuItem: newMenuItem,
     });
-   } catch (error) {
-            console.log(error);
-             return res.json({message:"Internal server error",success:false})
-   }
-}
+  } catch (error) {
+    logger.error("Error adding menu item", {
+      error: error.message,
+      stack: error.stack,
+    });
+    next(error);
+  }
+};
 
-export const getAllMenuItems=async(req,res)=>{
-   try {
-      const menuItems=await Menu.find().populate("category","name").sort({createdAt:-1});
-        res.status(200).json({ success: true, menuItems });
-   } catch (error) {
-      console.log(error);
-             return res.json({message:"Internal server error",success:false})
-   }
-}
+/**
+ * GET ALL MENU ITEMS
+ * Public
+ */
+export const getAllMenuItems = async (req, res, next) => {
+  try {
+    const menuItems = await Menu.find()
+      .populate("category", "name")
+      .sort({ createdAt: -1 });
 
-export const updateMenuItem=async(req,res)=>{
-   try {
-      const { id } = req.params;
+    logger.info("Fetched all menu items", {
+      count: menuItems.length,
+    });
+
+    res.status(200).json({
+      success: true,
+      menuItems,
+    });
+  } catch (error) {
+    logger.error("Error fetching menu items", {
+      error: error.message,
+    });
+    next(error);
+  }
+};
+
+/**
+ * UPDATE MENU ITEM
+ * Admin only
+ */
+export const updateMenuItem = async (req, res, next) => {
+  try {
+    const { id } = req.params;
     const { name, description, price, category, isAvailable } = req.body;
 
-    const menuItem=await Menu.findById(id);
-      if (!menuItem)
-      return res
-        .status(404)
-        .json({ message: "Menu item not found", success: false });
+    const menuItem = await Menu.findById(id);
 
-        if(req.file){
-               const result=await cloudinary.uploader.upload(req.file.path);
-               menuItem.image=result.secure_url;
+    if (!menuItem) {
+      logger.warn("Update failed: Menu item not found", { menuId: id });
 
-      }
-       if (name) menuItem.name = name;
+      return res.status(404).json({
+        success: false,
+        message: "Menu item not found",
+      });
+    }
+
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      menuItem.image = result.secure_url;
+    }
+
+    if (name) menuItem.name = name;
     if (description) menuItem.description = description;
     if (price) menuItem.price = price;
     if (category) menuItem.category = category;
-      if (isAvailable !== undefined) menuItem.isAvailable = isAvailable;
+    if (isAvailable !== undefined) menuItem.isAvailable = isAvailable;
 
-      await menuItem.save();
-        res
-      .status(200)
-      .json({ message: "Menu item updated", success: true, menuItem });
-   } catch (error) {
-           console.log(error);
-             return res.json({message:"Internal server error",success:false})
-   }
-}
+    await menuItem.save();
 
-export const deleteMenuItem=async(req,res)=>{
-   try {
-      const {id}=req.params;
-      const menuItem=await Menu.findByIdAndDelete(id);
-       res.status(200).json({ success: true, message: "Menu item deleted" });
-   } catch (error) {
-        console.log(error);
-             return res.json({message:"Internal server error",success:false})
-   }
-}
+    logger.info("Menu item updated", {
+      menuId: menuItem._id,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Menu item updated",
+      menuItem,
+    });
+  } catch (error) {
+    logger.error("Error updating menu item", {
+      error: error.message,
+      menuId: req.params.id,
+    });
+    next(error);
+  }
+};
+
+/**
+ * DELETE MENU ITEM
+ * Admin only
+ */
+export const deleteMenuItem = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const menuItem = await Menu.findByIdAndDelete(id);
+
+    if (!menuItem) {
+      logger.warn("Delete failed: Menu item not found", { menuId: id });
+
+      return res.status(404).json({
+        success: false,
+        message: "Menu item not found",
+      });
+    }
+
+    logger.info("Menu item deleted", {
+      menuId: id,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Menu item deleted",
+    });
+  } catch (error) {
+    logger.error("Error deleting menu item", {
+      error: error.message,
+      menuId: req.params.id,
+    });
+    next(error);
+  }
+};

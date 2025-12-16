@@ -3,12 +3,15 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import { connectDB } from "./config/config.db.js"
+import { errorHandler } from "./middlewares/errorMiddleware.js";
 import authRoutes from "./routes/authRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import menuRoutes from "./routes/menuRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
+import morgan from "morgan";
+import logger from "./config/logger.js";
 import dotenv from 'dotenv'
 dotenv.config()
 import connectCloudinary from './config/cloudinary.js'
@@ -29,8 +32,15 @@ app.use(cors({
     origin:"http://localhost:5173",
     credentials: true // accept cookies coming frontend and check them
 }))
-app.use(morgan())
 app.use(cookieParser())
+app.use(
+  morgan("dev", {
+    stream: {
+      write: (message) => logger.info(message.trim()),
+    },
+  })
+);
+
 
 //port
 const PORT = process.env.PORT || 5000;
