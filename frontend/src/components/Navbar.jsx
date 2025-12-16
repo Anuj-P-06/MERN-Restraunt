@@ -19,8 +19,7 @@ const Navbar = () => {
       const { data } = await axios.post("/api/auth/logout");
       if (data.success) {
         setUser(null);
-        toast.success(data.message || "Logged out successfully");
-
+        toast.success(data.message);
         navigate("/");
       }
     } catch (error) {
