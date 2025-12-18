@@ -16,7 +16,11 @@ import orderRoutes from "./routes/orderRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 
 // ENV CONFIG (TOP)
-dotenv.config();
+// dotenv.config();
+dotenv.config({
+  path: process.env.NODE_ENV === "test" ? ".env.test" : ".env",
+}); //this is done to pass the github check 
+
 
 // PORT (TOP – BEFORE USE)
 const PORT = process.env.PORT || 5000;
