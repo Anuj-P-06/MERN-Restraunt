@@ -5,8 +5,8 @@
   "scripts": {
     "server": "nodemon index.js",
     "start": "node index.js",
-    "test": "NODE_ENV=test jest",
-    "test:coverage": "NODE_ENV=test jest --coverage"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage"
   },
   "keywords": [],
   "author": "",
