@@ -40,13 +40,21 @@ app.use(
 app.use(cookieParser());
 
 // LOGGER
-app.use(
-  morgan("dev", {
-    stream: {
-      write: (message) => logger.info(message.trim()),
-    },
-  })
-);
+app.use((req, res, next) => {
+  req.startTime = Date.now();
+
+  res.on("finish", () => {
+    logger.info("Request completed", {
+      method: req.method,
+      path: req.originalUrl,
+      status: res.statusCode,
+      durationMs: Date.now() - req.startTime,
+    });
+  });
+
+  next();
+});
+
 
 // ROUTES
 app.get("/", (req, res) => {

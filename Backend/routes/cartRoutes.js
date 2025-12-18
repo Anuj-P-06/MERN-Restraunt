@@ -10,7 +10,11 @@ import {
 
 const cartRoutes = express.Router();
 
-cartRoutes.post("/add", protect, addToCart);
+cartRoutes.post("/add", (req, res, next) => {
+  console.log("Cart add route hit");
+  next();
+}, protect, addToCart);
+
 cartRoutes.get("/get", protect, getCart);
-cartRoutes.delete("/remove", protect, removeFromCart);
+cartRoutes.delete("/remove/:menuId", protect, removeFromCart);
 export default cartRoutes;

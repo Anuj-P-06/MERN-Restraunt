@@ -45,12 +45,12 @@ const Menu = () => {
                 className="w-full pl-12 pr-12 py-4 rounded-full border-2 border-gray-200 focus:border-yellow-500 focus:outline-none transition-colors duration-300 text-gray-700 placeholder-gray-400 shadow-md"
               />
               {searchQuery && (
-                <buuton
+                <buton
                   onClick={handleClearSearch}
                   className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
                   <X className="w-5 h-5" />
-                </buuton>
+                </buton>
               )}
             </div>
           </div>
