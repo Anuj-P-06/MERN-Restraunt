@@ -8,16 +8,19 @@
 5/12 - Multer was implemented and middle ware were setup
 
 
-## Debugging logs:
-5/12 - Fixed the issue api routes by naming them correctly.
+# Debugging logs:
+## 5/12
+     - Fixed the issue api routes by naming them correctly.
      - Fixed the Image upload issue by importing dotenv in cloudinary.js to properly import keys.
      
-7/12 - Fixed cloudinary import issue.
+## 7/12 
+     - Fixed cloudinary import issue.
 
-9/7 - Issue: Cart addition failed because the controller expected menuId but the request body was sending menuItemId, causing Menu.findById() to receive undefined.
+## 9/7 
+- Issue: Cart addition failed because the controller expected menuId but the request body was sending menuItemId, causing Menu.findById() to receive undefined.
 Fix: Updated controller to use menuItemId consistently in the request body and database lookup.
 
-10/7 - 
+## 10/7 - 
 ### Bug 1 — Invalid URL / Axios Failure
 
 Problem:
@@ -57,7 +60,7 @@ Ensured that the backend logout route returns a proper message field (e.g., "Log
 
 
 
-16/11 -
+## 16/11 -
 ### Bug 1- Jest ES Module Import Error
 Problem: Jest tests failed with SyntaxError: Cannot use import statement outside a module, preventing any test execution.
 
@@ -117,3 +120,15 @@ Reason: Backend route was defined as /remove without :menuId parameter. Controll
 Solution: Update route to cartRoutes.delete("/remove/:menuId", protect, removeFromCart);. This aligns frontend call /api/cart/remove/:id with backend controller logic.
 
 Outcome: Delete request now matches correctly and returns 200 OK. Cart items are removed successfully and UI updates as expected.
+
+
+### 18/12
+Bug:
+Backend GitHub Actions CI checks failed, blocking PR validation even though the application worked locally.
+
+Root Cause:
+CI environment lacked test-specific configuration, attempted to initialize external services, and was missing proper Jest ESM setup and required test dependencies (supertest).
+
+Solution:
+Isolated the test environment using .env.test, disabled external services during tests, configured Jest to support ES Modules, added missing dev dependencies, and enforced serial test execution, resulting in stable and passing CI checks.
+
