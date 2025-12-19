@@ -122,7 +122,7 @@ Solution: Update route to cartRoutes.delete("/remove/:menuId", protect, removeFr
 Outcome: Delete request now matches correctly and returns 200 OK. Cart items are removed successfully and UI updates as expected.
 
 
-### 18/12
+## 18/12
 Bug:
 Backend GitHub Actions CI checks failed, blocking PR validation even though the application worked locally.
 
@@ -131,4 +131,7 @@ CI environment lacked test-specific configuration, attempted to initialize exter
 
 Solution:
 Isolated the test environment using .env.test, disabled external services during tests, configured Jest to support ES Modules, added missing dev dependencies, and enforced serial test execution, resulting in stable and passing CI checks.
+
+## 19/12
+The production frontend was blocked because backend CORS was restricted to localhost instead of allowing the deployed frontend origin.
 
