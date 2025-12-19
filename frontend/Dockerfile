@@ -3,6 +3,11 @@ FROM node:22-alpine AS build
 
 WORKDIR /app
 
+# 👇 Accept build-time variable
+ARG VITE_BASE_URL
+ENV VITE_BASE_URL=$VITE_BASE_URL
+
+
 COPY package*.json ./
 RUN npm install
 
