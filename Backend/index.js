@@ -37,10 +37,14 @@ if (process.env.NODE_ENV !== "test") {
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    credentials: true // accept cookies coming frontend and check them
+    origin: [
+      "http://localhost:5173",
+      "https://mern-restraunt-1.onrender.com",
+    ],
+    credentials: true,
   })
 );
+
 app.use(cookieParser());
 
 // LOGGER
