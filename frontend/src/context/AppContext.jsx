@@ -1,12 +1,9 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
 import { toast } from "react-hot-toast";
 
 export const AppContext = createContext();
-
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
-axios.defaults.withCredentials = true;
 
 const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
@@ -21,7 +18,7 @@ const AppContextProvider = ({ children }) => {
   /* ---------------- AUTH ---------------- */
   const isAuth = async () => {
     try {
-      const { data } = await axios.get("/api/auth/is-auth");
+      const { data } = await api.get("/api/auth/is-auth");
       if (data.success) setUser(data.user);
     } catch (error) {
       console.log("Auth check failed");
@@ -31,7 +28,7 @@ const AppContextProvider = ({ children }) => {
   /* ---------------- CATEGORIES ---------------- */
   const fetchCategories = async () => {
     try {
-      const { data } = await axios.get("/api/category/all");
+      const { data } = await api.get("/api/category/all");
       if (data.success) setCategories(data.categories);
     } catch (error) {
       console.log("Error fetching categories:", error);
@@ -41,7 +38,7 @@ const AppContextProvider = ({ children }) => {
   /* ---------------- MENUS ---------------- */
   const fetchMenus = async () => {
     try {
-      const { data } = await axios.get("/api/menu/all");
+      const { data } = await api.get("/api/menu/all");
       if (data.success) setMenus(data.menuItems);
     } catch (error) {
       console.log("Error fetching menus:", error);
@@ -51,7 +48,7 @@ const AppContextProvider = ({ children }) => {
   /* ---------------- CART ---------------- */
   const fetchCartData = async () => {
     try {
-      const { data } = await axios.get("/api/cart/get");
+      const { data } = await api.get("/api/cart/get");
       if (data.success) setCart(data.cart);
     } catch (error) {
       console.log("Error fetching cart:", error);
@@ -60,7 +57,7 @@ const AppContextProvider = ({ children }) => {
 
   const addToCart = async (menuId) => {
     try {
-      const { data } = await axios.post("/api/cart/add", {
+      const { data } = await api.post("/api/cart/add", {
         menuId,
         quantity: 1,
       });
