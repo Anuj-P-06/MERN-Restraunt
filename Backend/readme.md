@@ -18,26 +18,26 @@
   - GitHub Actions
 
 ## features:
-  authentication:
+  ### authentication:
     - User login and registration
     - Admin authentication
     - JWT-based auth with cookies
-  authorization:
+  ### authorization:
     - Role-based access control
     - Protected routes
-  modules:
+  ### modules:
     - Menu management
     - Category management
     - Cart
     - Orders
     - Table bookings
-  utilities:
+  ### utilities:
     - Centralized error handling
     - Secure file uploads
     - Structured logging
 
 ## project_structure:
-  backend:
+ ### backend:
     - controllers
     - routes
     - models
@@ -52,28 +52,28 @@
   adminOnly: Restricts access to admins
 
 ## testing:
-  framework: Jest
-  api_testing: Supertest
-  features:
+  ### framework: Jest
+  ### api_testing: Supertest
+  ### features:
     - Unit tests
     - Integration tests
     - Separate test database
     - Code coverage reporting
-  commands:
+  ### commands:
     - npm run test
     - npm run test:coverage
 
 ## ci_cd:
-  tool: GitHub Actions
-  pipeline_features:
+  ### tool: GitHub Actions
+  ### pipeline_features:
     - Runs tests on every push
     - Runs tests on pull requests
     - Prevents broken code from merging
     - Uses environment-based configs
 
 ## logging:
-  tool: Winston
-  logs:
+  ### tool: Winston
+  ### logs:
     combined: logs/combined.log
     error: logs/error.log
 
@@ -87,12 +87,12 @@
   NODE_ENV: development
 
 ## run_locally:
-  steps:
+  ### steps:
     - npm install
     - npm run server
 
 ## deployment:
-  platform: Render
-  notes:
+  ### platform: Render
+  ### notes:
     - Production-safe configuration
     - CORS and cookies enabled for frontend
