@@ -1,3 +1,4 @@
+
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { LockIcon, MailIcon } from "lucide-react";
@@ -33,7 +34,7 @@ const AdminLogin = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }

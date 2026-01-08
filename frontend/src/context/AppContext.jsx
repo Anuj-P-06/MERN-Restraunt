@@ -10,6 +10,7 @@ const AppContextProvider = ({ children }) => {
 
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [admin, setAdmin] = useState(null); // 
   const [categories, setCategories] = useState([]);
   const [menus, setMenus] = useState([]);
   const [cart, setCart] = useState([]);
@@ -19,7 +20,9 @@ const AppContextProvider = ({ children }) => {
   const isAuth = async () => {
     try {
       const { data } = await api.get("/api/auth/is-auth");
-      if (data.success) setUser(data.user);
+      if (data.success) {
+        setUser(data.user);
+      }
     } catch (error) {
       console.log("Auth check failed");
     }
@@ -31,7 +34,7 @@ const AppContextProvider = ({ children }) => {
       const { data } = await api.get("/api/category/all");
       if (data.success) setCategories(data.categories);
     } catch (error) {
-      console.log("Error fetching categories:", error);
+      console.log(error);
     }
   };
 
@@ -41,7 +44,7 @@ const AppContextProvider = ({ children }) => {
       const { data } = await api.get("/api/menu/all");
       if (data.success) setMenus(data.menuItems);
     } catch (error) {
-      console.log("Error fetching menus:", error);
+      console.log(error);
     }
   };
 
@@ -51,7 +54,7 @@ const AppContextProvider = ({ children }) => {
       const { data } = await api.get("/api/cart/get");
       if (data.success) setCart(data.cart);
     } catch (error) {
-      console.log("Error fetching cart:", error);
+      console.log(error);
     }
   };
 
@@ -103,6 +106,9 @@ const AppContextProvider = ({ children }) => {
         setLoading,
         user,
         setUser,
+        admin,
+        setAdmin,
+        axios: api, // ✅ ADD THIS
         categories,
         menus,
         cart,
@@ -114,6 +120,7 @@ const AppContextProvider = ({ children }) => {
         addToCart,
       }}
     >
+
       {children}
     </AppContext.Provider>
   );
