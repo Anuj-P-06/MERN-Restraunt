@@ -78,13 +78,13 @@
     error: logs/error.log
 
 ## environment_variables:
-  PORT: 5000
-  MONGO_URI: your_mongodb_uri
-  JWT_SECRET: your_secret
-  CLOUDINARY_CLOUD_NAME: xxxx
-  CLOUDINARY_API_KEY: xxxx
-  CLOUDINARY_API_SECRET: xxxx
-  NODE_ENV: development
+  - PORT: 5000
+  - MONGO_URI: your_mongodb_uri
+  - JWT_SECRET: your_secret
+  - CLOUDINARY_CLOUD_NAME: xxxx
+  - CLOUDINARY_API_KEY: xxxx
+  - CLOUDINARY_API_SECRET: xxxx
+  - NODE_ENV: development
 
 ## run_locally:
   ### steps:
