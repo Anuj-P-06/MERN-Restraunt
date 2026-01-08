@@ -1,10 +1,12 @@
+
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { LockIcon, MailIcon, User2Icon } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { AppContext } from "../context/AppContext";
 const Login = () => {
-  const { navigate, loading, setLoading, axios, setUser } = useContext(AppContext);
+  const { navigate, loading, setLoading, axios, setUser } =
+    useContext(AppContext);
   // state for input value
   const [formData, setFormData] = useState({
     email: "",
@@ -17,24 +19,34 @@ const Login = () => {
   };
 
   // handle submit form
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const { data } = await axios.post("/api/auth/login", formData);
-      if (data.success) {
-        setUser(true);
-        toast.success(data.message);
-        navigate("/");
-      } else {
-        toast.error(data.message);
+ // handle submit form
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    setLoading(true);
+    const { data } = await axios.post("/api/auth/login", formData);
+
+    if (data.success) {
+      // ✅ Save token to localStorage so axios interceptor can attach it
+      if (data.token) {
+        localStorage.setItem("token", data.token);
       }
-    } catch (error) {
-      toast.error(error.response.data.message);
-    } finally {
-      setLoading(false);
+
+      // ✅ setUser should hold actual user object, not just true
+      setUser(data.user);
+
+      toast.success(data.message);
+      navigate("/");
+    } else {
+      toast.error(data.message);
     }
-  };
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
   return (
     <div className="py-12 flex items-center justify-center">
       <form
@@ -94,4 +106,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;

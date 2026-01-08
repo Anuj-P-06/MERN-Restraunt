@@ -13,7 +13,7 @@ const AppContextProvider = ({ children }) => {
   const [admin, setAdmin] = useState(null); // 
   const [categories, setCategories] = useState([]);
   const [menus, setMenus] = useState([]);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState({ items: [] });
   const [totalPrice, setTotalPrice] = useState(0);
 
   /* ---------------- AUTH ---------------- */
@@ -87,16 +87,24 @@ const AppContextProvider = ({ children }) => {
     }
   }, [cart]);
 
-  const cartCount =
-    cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
+  const cartCount = cart?.items?.length
+  ? cart.items.reduce((acc, item) => acc + item.quantity, 0)
+  : 0;
+
 
   /* ---------------- INITIAL LOAD ---------------- */
   useEffect(() => {
-    isAuth();
-    fetchCategories();
-    fetchMenus();
-    fetchCartData();
+  isAuth();
+  fetchCategories();
+  fetchMenus();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchCartData();
+  }
+  }, [user]);
+
 
   return (
     <AppContext.Provider

@@ -90,18 +90,13 @@ export const adminLogin = async (req, res) => {
     const adminEmail = process.env.ADMIN_EMAIL;
     const adminPassword = process.env.ADMIN_PASSWORD;
 
-    if (
-      email !== process.env.ADMIN_EMAIL ||
-      password !== process.env.ADMIN_PASSWORD
-    ) {
+    if (email !== adminEmail || password !== adminPassword) {
       return res.json({ message: "Invalid credentials", success: false });
     }
 
-    const token = jwt.sign(
-      { role: "admin", email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -113,6 +108,9 @@ export const adminLogin = async (req, res) => {
     return res.json({
       success: true,
       message: "Admin logged in successfully",
+      admin: {
+        admin: adminEmail,
+      },
     });
   } catch (error) {
     console.log(error.message);
