@@ -1,4 +1,4 @@
-### name: Full-Stack Restaurant Management System
+# Full-Stack Restaurant Management System
 ##  stack: MERN
 ##  description:
     A production-style full-stack restaurant management application built using
