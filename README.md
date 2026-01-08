@@ -1,6 +1,6 @@
 ### name: Full-Stack Restaurant Management System
 ##  stack: MERN
-##  description: >
+##  description:
     A production-style full-stack restaurant management application built using
     the MERN stack. The project demonstrates real-world development practices
     including authentication, authorization, testing, CI/CD, logging, debugging,
@@ -77,15 +77,15 @@
       - npm run server
 
 ### admin_panel:
-  access:
-    description: >
-      Admin panel is accessed using an admin account.
-      Admin privileges are determined via role-based JWT claims.
-    steps:
+  - access:
+    - description: >
+      - Admin panel is accessed using an admin account.
+      - Admin privileges are determined via role-based JWT claims.
+    - steps:
       - Login using admin credentials
       - Admin-only routes and UI components become accessible
       - Admin can manage menu, categories, orders, and bookings
-  protection:
+  - protection:
     - Admin-only middleware on backend
     - Role-based conditional rendering on frontend
 
@@ -108,91 +108,91 @@
       - Uses test-specific environment variables
 
 ## logging_and_monitoring:
-  tool: Winston
-  logs:
-    combined: logs/combined.log
-    error: logs/error.log
-  purpose:
+  - tool: Winston
+  - logs:
+    - combined: logs/combined.log
+    - error: logs/error.log
+  - purpose:
     - Debugging
     - Error tracking
     - Production diagnostics
 
 ## debugging_logs:
-  "05-12":
+  - "05-12":
     - Fixed API route issues caused by incorrect route naming
     - Fixed Cloudinary image upload by importing dotenv correctly
 
-  "07-12":
+  - "07-12":
     - Fixed Cloudinary import issue
 
-  "09-07":
-    issue: Cart addition failed due to mismatched request body field
-    cause: Backend expected menuId while frontend sent menuItemId
-    fix: Standardized field naming across frontend and backend
+  - "09-07":
+    - issue: Cart addition failed due to mismatched request body field
+    - cause: Backend expected menuId while frontend sent menuItemId
+    - fix: Standardized field naming across frontend and backend
 
-  "10-07":
-    bug_1:
-      title: Invalid URL / Axios Failure
-      cause: Trailing semicolon and spaces in VITE_BASE_URL
-      fix: Corrected env variable and restarted Vite server
-    bug_2:
-      title: Toast notifications not visible
-      cause: Missing <Toaster /> component
-      fix: Mounted <Toaster /> globally
-    bug_3:
-      title: Logout toast missing message
-      cause: Backend logout response missing message field
-      fix: Returned proper success message from backend
+  - "10-07":
+    - bug_1:
+      - title: Invalid URL / Axios Failure
+      - cause: Trailing semicolon and spaces in VITE_BASE_URL
+      - fix: Corrected env variable and restarted Vite server
+    - bug_2:
+      - title: Toast notifications not visible
+      - cause: Missing <Toaster /> component
+      - fix: Mounted <Toaster /> globally
+    - bug_3:
+      - title: Logout toast missing message
+      - cause: Backend logout response missing message field
+      - fix: Returned proper success message from backend
 
-  "16-11":
-    bug_1:
-      title: Jest ES Module import error
-      cause: Jest running in CommonJS while backend used ES Modules
-      fix: Enabled experimental VM modules and updated Jest config
-    bug_2:
-      title: 401 Unauthorized on table booking
-      cause: Booking API protected but frontend allowed unauthenticated access
-      fix: Added frontend auth guard and redirect to login
-    bug_3:
-      title: Admin APIs returning 401 after login
-      cause:
+  - "16-11":
+    - bug_1:
+      - title: Jest ES Module import error
+      - cause: Jest running in CommonJS while backend used ES Modules
+      - fix: Enabled experimental VM modules and updated Jest config
+    - bug_2:
+      - title: 401 Unauthorized on table booking
+      - cause: Booking API protected but frontend allowed unauthenticated access
+      - fix: Added frontend auth guard and redirect to login
+    - bug_3:
+      - title: Admin APIs returning 401 after login
+      - cause:
         - sameSite strict cookies dropped in cross-port requests
         - Missing role in JWT payload
-      fix:
+      - fix:
         - Updated sameSite to lax for local dev
         - Added role-based claims to JWT
-    bug_4:
-      title: Menu items not displaying
-      cause: fetchMenus() not invoked on app load
-      fix: Called fetchMenus() inside AppContext useEffect
-    bug_5:
-      title: Items not adding to cart
-      cause: menuItemId vs menuId mismatch
-      fix: Aligned request body naming
-    bug_6:
-      title: Items not deleting from cart
-      cause: Backend route missing :menuId param
-      fix: Updated route to /remove/:menuId
+    - bug_4:
+      - title: Menu items not displaying
+      - cause: fetchMenus() not invoked on app load
+      - fix: Called fetchMenus() inside AppContext useEffect
+    - bug_5:
+      - title: Items not adding to cart
+      - cause: menuItemId vs menuId mismatch
+      - fix: Aligned request body naming
+    - bug_6:
+      - title: Items not deleting from cart
+      - cause: Backend route missing :menuId param
+      - fix: Updated route to /remove/:menuId
 
-  "18-12":
-    issue: GitHub Actions CI failing
-    cause:
+  - "18-12":
+    - issue: GitHub Actions CI failing
+    - cause:
       - Missing test env config
       - External services initialized during tests
       - Missing Jest ESM support
-    fix:
+    - fix:
       - Added .env.test
       - Disabled external services in tests
       - Configured Jest for ES Modules
       - Installed missing dev dependencies
 
-  "19-12":
-    issue: Production frontend blocked by CORS
-    cause: Backend CORS restricted to localhost
-    fix: Allowed deployed frontend origin in CORS config
+  - "19-12":
+    - issue: Production frontend blocked by CORS
+    - cause: Backend CORS restricted to localhost
+    - fix: Allowed deployed frontend origin in CORS config
 
 ## screenshots_and_media:
-  structure:
+  - structure:
     - screenshots/homepage.png
     - screenshots/menu.png
     - screenshots/cart.png
@@ -200,13 +200,14 @@
     - screenshots/booking.png
 
 ## deployment:
-  backend:
-    platform: Render
-  frontend:
-    configuration: Environment-based API URL
+  - backend:
+    - platform: Render
+  - frontend:
+    - platform: Render
+    - configuration: Environment-based API URL
 
 ## repository_structure:
-  root:
+  - root:
     - frontend
     - backend
     - README.md
