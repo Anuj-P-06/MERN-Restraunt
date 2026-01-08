@@ -1,65 +1,161 @@
-import Cart from "../models/cartModel.js";
-import Menu from "../models/menuModel.js";
-export const addToCart = async (req, res) => {
-  try {
-    const { menuId, quantity } = req.body;
-    const { id } = req.user;
-    const menuItem = await Menu.findById(menuId);
-    if (!menuItem)
-      return res.status(404).json({ message: "Menu item not found" });
+import User from '../models/userModel.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv'
+dotenv.config()
 
-    let cart = await Cart.findOne({ user: id });
-    if (!cart) {
-      cart = new Cart({ user: id, items: [] });
+// When user logs in a unique token is generated based on which user is authenticated
+// 1d -> 1 day
+
+// Generate jwt
+// payload -> will have user_id
+const generateToken = (res,payload) => {
+    const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:'1d'})
+    res.cookie('token',token,{
+        httpOnly:true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite:"lax",
+        path: "/",
+        maxAge:24*60*60*1000
+  });
+  return token;
+}
+
+// Register user
+export const registerUser = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res.json({
+        message: "Please fill all the fields",
+        success: false,
+      });
+    }
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.json({ message: "User already exists", success: false });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ name, email, password: hashedPassword });
+    return res.json({ message: "User registered successfully", success: true });
+  } catch (error) {
+    console.log(error.message);
+    return res.json({ message: "Internal server error", success: false });
+  }
+};
+
+// For user login
+export const loginUser = async(req,res)=>{
+    try{
+        const { email,password } = req.body;
+        if ( !email || !password ){
+            return res.json({message:"Please fill all the fields", success:false})
+    }
+        const user = await User.findOne({email});
+        if (!user){
+            return res.json({message:"User does not exists",success:false})
+    }
+        const isMatch = await bcrypt.compare(password,user.password)
+
+        if (!isMatch){
+            return res.json({message:'Invalid credentials', success:false})
     }
 
-    const existingItem = cart.items.find(
-      (item) => item.menuItem.toString() === menuId
-    );
+        // _id not .id because mongodb user _id not .id
 
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      cart.items.push({ menuItem: menuId, quantity });
+        generateToken(res,{id:user._id,role:user.isAdmin? 'admin':'user'})
+    res.json({
+            message:"User logged in successfully",
+            success:true,
+            user:{
+                name : user.name,
+                email: user.email
+            }
+        })
+    }
+    catch (error){
+    console.log(error.message);
+        return res.json({message:'Internal server error', success:false})
+  }
+}
+
+// For admin login/logout and it will have different token and it will only require email since it doesn;t have id
+export const adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.json({ message: "Please fill all fields", success: false });
+    }
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (
+      email !== process.env.ADMIN_EMAIL ||
+      password !== process.env.ADMIN_PASSWORD
+    ) {
+      return res.json({ message: "Invalid credentials", success: false });
     }
 
-    await cart.save();
-    res
-      .status(200)
-      .json({ message: "Item added to cart", success: true, cart });
-  } catch (error) {
-    console.log(error);
-    return res.json({ message: "Internal server error", success: false });
-  }
-};
-
-// Get user cart
-export const getCart = async (req, res) => {
-  try {
-    const { id } = req.user;
-    const cart = await Cart.findOne({ user: id }).populate("items.menuItem");
-    if (!cart) return res.status(200).json({ items: [] });
-    res.status(200).json({ cart, success: true });
-  } catch (error) {
-    console.log(error);
-    return res.json({ message: "Internal server error", success: false });
-  }
-};
-
-export const removeFromCart = async (req, res) => {
-  try {
-    const { id } = req.user;
-    const { menuId } = req.params;
-
-    const cart = await Cart.findOne({ user: id });
-    if (!cart) return res.status(404).json({ message: "Cart not found" });
-    cart.items = cart.items.filter(
-      (item) => item.menuItem._id.toString() !== menuId
+    const token = jwt.sign(
+      { role: "admin", email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
     );
-    await cart.save();
-    res.status(200).json({ message: "Item removed from cart", success: true });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax", // ✅ NOT "none" or "strict"
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return res.json({
+      success: true,
+      message: "Admin logged in successfully",
+    });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     return res.json({ message: "Internal server error", success: false });
   }
 };
+
+
+export const logoutUser = async(req,res) => {
+    try{
+        res.clearCookie("token")
+        return res.json({messge:"User logged out successfully", success:true})
+    }
+    catch (error){
+    console.log(error.message);
+        return res.json({message:'Internal server error',success:false})
+  }
+}
+
+/* findById is a mongoose method
+ .select(-password) means get everything besides password
+*/
+export const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
+    }
+    res.json(user);
+  } catch (error) {
+    return res.json({ message: "Internal server error", success: false });
+  }
+};
+
+export const isAuth = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const user = await User.findById(id).select("-password");
+    res.json({ success: true, user });
+  } catch (error) {
+    return res.json({ message: "Internal server error", success: false });
+  }
+};
+
