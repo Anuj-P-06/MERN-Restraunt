@@ -62,4 +62,4 @@ export const removeFromCart = async (req, res) => {
     console.log(error);
     return res.json({ message: "Internal server error", success: false });
   }
-};
+};  
