@@ -5,39 +5,40 @@ To check if user is logged in or not
 To check if logged in user is admin or not
 */
 export const protect = (req, res, next) => {
-    console.log("Protect middleware hit, token:", req.cookies.token);
-    console.log("AUTH COOKIES:", req.cookies);
-    const token = req.cookies.token;
-    if (!token) {
-        return res.status(401).json({ message: "Not authorized", success: false });
-    }
+  const token =
+    req.cookies.token ||
+    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
-        next();
-    } catch (error) {
-        res.status(401).json({ message: "Invalid token" });
-    }
+  if (!token) {
+        return res.status(401).json({ message: "Not authorized", success: false });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token" });
+  }
 }
 
 export const adminOnly = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
         return res.status(401).json({ message: "Not Authorized", success: false });
-    }
+   }
 
-    try {
+   try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.admin = decoded;
 
         if (req.admin.email === process.env.ADMIN_EMAIL) {
             return next();
-        }
+      }
 
         return res.status(403).json({ message: "Forbidden: Not Admin" });
         
-    } catch (error) {
-        res.status(401).json({ message: "Invalid token" });
-    }
+   } catch (error) {
+           res.status(401).json({ message: "Invalid token" });
+   }
 }

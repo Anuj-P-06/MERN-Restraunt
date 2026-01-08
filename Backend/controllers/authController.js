@@ -17,8 +17,8 @@ const generateToken = (res,payload) => {
         sameSite:"lax",
         path: "/",
         maxAge:24*60*60*1000
-    });
-    return token;
+  });
+  return token;
 }
 
 // Register user
@@ -50,21 +50,21 @@ export const loginUser = async(req,res)=>{
         const { email,password } = req.body;
         if ( !email || !password ){
             return res.json({message:"Please fill all the fields", success:false})
-        }
+    }
         const user = await User.findOne({email});
         if (!user){
             return res.json({message:"User does not exists",success:false})
-        }
+    }
         const isMatch = await bcrypt.compare(password,user.password)
 
         if (!isMatch){
             return res.json({message:'Invalid credentials', success:false})
-        }
+    }
 
         // _id not .id because mongodb user _id not .id
 
         generateToken(res,{id:user._id,role:user.isAdmin? 'admin':'user'})
-        res.json({
+    res.json({
             message:"User logged in successfully",
             success:true,
             user:{
@@ -74,9 +74,9 @@ export const loginUser = async(req,res)=>{
         })
     }
     catch (error){
-        console.log(error.message);
+    console.log(error.message);
         return res.json({message:'Internal server error', success:false})
-    }
+  }
 }
 
 // For admin login/logout and it will have different token and it will only require email since it doesn;t have id
@@ -87,19 +87,16 @@ export const adminLogin = async (req, res) => {
     if (!email || !password) {
       return res.json({ message: "Please fill all fields", success: false });
     }
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
 
-    if (
-      email !== process.env.ADMIN_EMAIL ||
-      password !== process.env.ADMIN_PASSWORD
-    ) {
+    if (email !== adminEmail || password !== adminPassword) {
       return res.json({ message: "Invalid credentials", success: false });
     }
 
-    const token = jwt.sign(
-      { role: "admin", email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -111,8 +108,12 @@ export const adminLogin = async (req, res) => {
     return res.json({
       success: true,
       message: "Admin logged in successfully",
+      admin: {
+        admin: adminEmail,
+      },
     });
   } catch (error) {
+    console.log(error.message);
     return res.json({ message: "Internal server error", success: false });
   }
 };
@@ -124,9 +125,9 @@ export const logoutUser = async(req,res) => {
         return res.json({messge:"User logged out successfully", success:true})
     }
     catch (error){
-        console.log(error.message);
+    console.log(error.message);
         return res.json({message:'Internal server error',success:false})
-    }
+  }
 }
 
 /* findById is a mongoose method
