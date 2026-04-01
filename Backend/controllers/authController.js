@@ -19,7 +19,7 @@ const generateToken = (res,payload) => {
         maxAge:24*60*60*1000
   });
   return token;
-}
+};
 
 // Register user
 export const registerUser = async (req, res) => {
@@ -63,10 +63,11 @@ export const loginUser = async(req,res)=>{
 
         // _id not .id because mongodb user _id not .id
 
-        generateToken(res,{id:user._id,role:user.isAdmin? 'admin':'user'})
+        const token = generateToken(res,{id:user._id,role:user.isAdmin? 'admin':'user'})
     res.json({
             message:"User logged in successfully",
             success:true,
+            token,
             user:{
                 name : user.name,
                 email: user.email
@@ -108,6 +109,7 @@ export const adminLogin = async (req, res) => {
     return res.json({
       success: true,
       message: "Admin logged in successfully",
+      token,
       admin: {
         admin: adminEmail,
       },
