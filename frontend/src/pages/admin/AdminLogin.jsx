@@ -26,6 +26,7 @@ const AdminLogin = () => {
       const { data } = await axios.post("/api/auth/admin/login", formData);
 
       if (data.success) {
+        localStorage.setItem("token", data.token);
         localStorage.setItem("admin", JSON.stringify(data.admin));
         setAdmin(true);
         toast.success(data.message);
