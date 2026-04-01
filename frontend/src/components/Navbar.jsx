@@ -79,20 +79,20 @@ const Navbar = () => {
             {/* Login/Profile - Desktop */}
             <div className="hidden md:block">
               {user ? (
-                <div className="relative">
+                <div
+                  className="relative"
+                  onMouseEnter={() => setIsProfileOpen(true)}
+                  onMouseLeave={() => setIsProfileOpen(false)}
+                >
                   <button
                     className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                    onMouseEnter={() => setIsProfileOpen(true)}
-                    onMouseLeave={() => setIsProfileOpen(false)}
                   >
                     <UserCircle size={30} className="text-gray-700" />
                   </button>
 
                   {isProfileOpen && (
                     <div
-                      onMouseEnter={() => setIsProfileOpen(true)}
-                      onMouseLeave={() => setIsProfileOpen(false)}
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100"
+                      className="absolute right-0 top-full w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100"
                     >
                       <Link
                         to={"/my-bookings"}
