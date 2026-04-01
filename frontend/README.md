@@ -1,16 +1,63 @@
-# React + Vite
+# name: Restaurant Management App - Frontend
+## description: 
+    Frontend of a full-stack restaurant management application built using React.
+    Provides a responsive and role-based UI for users and admins.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## tech_stack:
+  - React.js
+  - Context API
+  - React Router
+  - Axios
+  - Tailwind CSS
+  - React Hot Toast
 
-Currently, two official plugins are available:
+## features:
+### user:
+    - User authentication (login/logout)
+    - Browse menu and categories
+    - Add and remove items from cart
+    - Table booking
+    - Place orders
+    - Protected routes
+### admin:
+    - Admin authentication
+    - Menu CRUD operations
+    - Category management
+    - View orders and bookings
+    - Role-based UI rendering
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## project_structure:
+### src:
+    - components
+    - pages
+    - context
+    - services
+    - utils
+    - App.jsx
+    - main.jsx
 
-## React Compiler
+## state_management:
+  ### type: Context API
+  ### stores:
+    - Auth state
+    - Cart state
+    - Axios instance
+    - Navigation helpers
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## api_integration:
+  communication: REST APIs
+  client: Axios
+  base_url: Environment based
 
-## Expanding the ESLint configuration
+## environment_variables:
+  VITE_BASE_URL: http://localhost:5000
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## run_locally:
+  ### steps:
+    - npm install
+    - npm run dev
+
+## notes:
+  - Backend must be running
+  - Uses cookie-based authentication
+  - Fully responsive design
