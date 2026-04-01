@@ -1,6 +1,6 @@
 import express from "express";
 
-import {adminOnly,protect} from "../middlewares/authMiddleware.js"
+import { adminOnly, protect } from "../middlewares/authMiddleware.js"
 import { createBooking, getAllBookings, getUserBookings, updateBookingStatus } from "../controllers/bookingController.js";
 
 

@@ -1,12 +1,22 @@
 import Booking from "../models/bookingModel.js";
 export const createBooking = async (req, res) => {
   try {
-    const { id } = req.user;
+    const { id } = req.user || {};
+    if (!id) {
+      return res
+        .status(401)
+        .json({ message: "Please login with a user account", success: false });
+    }
     const { name, phone, numberOfPeople, date, time, note } = req.body;
     if (!name || !phone || !numberOfPeople || !date || !time) {
       return res
         .status(400)
         .json({ message: "All fields are required", success: false });
+    }
+    if (Number(numberOfPeople) < 1) {
+      return res
+        .status(400)
+        .json({ message: "Number of people must be at least 1", success: false });
     }
     // Check for overlapping bookings
     const existingBooking = await Booking.findOne({
@@ -32,7 +42,9 @@ export const createBooking = async (req, res) => {
       .json({ success: true, message: "Table booked successfully", booking });
   } catch (error) {
     console.log(error);
-    return res.json({ message: "Internal server error", success: false });
+    return res
+      .status(500)
+      .json({ message: "Internal server error", success: false });
   }
 };
 

@@ -33,9 +33,14 @@ const AddMenu = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const { data } = await axios.post("/api/menu/add", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const payload = new FormData();
+      payload.append("name", formData.name);
+      payload.append("price", formData.price);
+      payload.append("description", formData.description);
+      payload.append("category", formData.category);
+      payload.append("image", formData.image);
+
+      const { data } = await axios.post("/api/menu/add", payload);
       if (data.success) {
         toast.success(data.message);
         navigate("/admin/menus");
