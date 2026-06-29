@@ -233,3 +233,108 @@
   - MERN stack interviews
   - Full-stack developer roles
   - Backend-heavy evaluations
+
+```
+E-comm
+├─ Backend
+│  ├─ .dockerignore
+│  ├─ config
+│  │  ├─ cloudinary.js
+│  │  ├─ config.db.js
+│  │  └─ logger.js
+│  ├─ controllers
+│  │  ├─ authController.js
+│  │  ├─ bookingController.js
+│  │  ├─ cartController.js
+│  │  ├─ categoryController.js
+│  │  ├─ menuController.js
+│  │  └─ orderController.js
+│  ├─ Dockerfile
+│  ├─ index.js
+│  ├─ jest.config.js
+│  ├─ middlewares
+│  │  ├─ authMiddleware.js
+│  │  ├─ errorMiddleware.js
+│  │  └─ multer.js
+│  ├─ models
+│  │  ├─ bookingModel.js
+│  │  ├─ cartModel.js
+│  │  ├─ categoryModel.js
+│  │  ├─ menuModel.js
+│  │  ├─ orderModel.js
+│  │  └─ userModel.js
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ readme.md
+│  ├─ routes
+│  │  ├─ authRoutes.js
+│  │  ├─ bookingRoutes.js
+│  │  ├─ cartRoutes.js
+│  │  ├─ categoryRoutes.js
+│  │  ├─ menuRoutes.js
+│  │  └─ orderRoutes.js
+│  └─ tests
+│     └─ health.test.js
+├─ docker-compose.yml
+├─ frontend
+│  ├─ .dockerignore
+│  ├─ Dockerfile
+│  ├─ eslint.config.js
+│  ├─ index.html
+│  ├─ nginx.conf
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ public
+│  │  ├─ logo.png
+│  │  ├─ pizza.png
+│  │  └─ vite.svg
+│  ├─ README.md
+│  ├─ src
+│  │  ├─ api
+│  │  │  └─ axios.js
+│  │  ├─ App.css
+│  │  ├─ App.jsx
+│  │  ├─ assets
+│  │  │  ├─ logo.png
+│  │  │  ├─ pizza.png
+│  │  │  └─ react.svg
+│  │  ├─ components
+│  │  │  ├─ Categories.jsx
+│  │  │  ├─ Footer.jsx
+│  │  │  ├─ Hero.jsx
+│  │  │  ├─ MenuCard.jsx
+│  │  │  ├─ Menus.jsx
+│  │  │  ├─ Navbar.jsx
+│  │  │  ├─ NewsLetter.jsx
+│  │  │  └─ Testimonial.jsx
+│  │  ├─ context
+│  │  │  └─ AppContext.jsx
+│  │  ├─ index.css
+│  │  ├─ main.jsx
+│  │  └─ pages
+│  │     ├─ admin
+│  │     │  ├─ AddCategory.jsx
+│  │     │  ├─ AddMenu.jsx
+│  │     │  ├─ AdminLayout.jsx
+│  │     │  ├─ AdminLogin.jsx
+│  │     │  ├─ Bookings.jsx
+│  │     │  ├─ Categories.jsx
+│  │     │  ├─ Dashboard.jsx
+│  │     │  ├─ Menus.jsx
+│  │     │  └─ Orders.jsx
+│  │     ├─ BookTable.jsx
+│  │     ├─ Cart.jsx
+│  │     ├─ Checkout.jsx
+│  │     ├─ Contact.jsx
+│  │     ├─ Home.jsx
+│  │     ├─ Login.jsx
+│  │     ├─ Menu.jsx
+│  │     ├─ MenuDetails.jsx
+│  │     ├─ MyBookings.jsx
+│  │     ├─ MyOrders.jsx
+│  │     └─ Signup.jsx
+│  └─ vite.config.js
+├─ README.md
+└─ test_import.js
+
+```

@@ -8,18 +8,30 @@ export const AppContext = createContext();
 const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
 
+  /* ---------------- STATES ---------------- */
+
   const [loading, setLoading] = useState(false);
+
   const [user, setUser] = useState(null);
-  const [admin, setAdmin] = useState(null); // 
+
+  //  Restore admin from localStorage on refresh
+  const [admin, setAdmin] = useState(() => {
+    const storedAdmin = localStorage.getItem("admin");
+    return storedAdmin ? JSON.parse(storedAdmin) : null;
+  });
+
   const [categories, setCategories] = useState([]);
   const [menus, setMenus] = useState([]);
+
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
   /* ---------------- AUTH ---------------- */
+
   const isAuth = async () => {
     try {
       const { data } = await api.get("/api/auth/is-auth");
+
       if (data.success) {
         setUser(data.user);
       }
@@ -29,32 +41,44 @@ const AppContextProvider = ({ children }) => {
   };
 
   /* ---------------- CATEGORIES ---------------- */
+
   const fetchCategories = async () => {
     try {
       const { data } = await api.get("/api/category/all");
-      if (data.success) setCategories(data.categories);
+
+      if (data.success) {
+        setCategories(data.categories);
+      }
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching categories:", error);
     }
   };
 
   /* ---------------- MENUS ---------------- */
+
   const fetchMenus = async () => {
     try {
       const { data } = await api.get("/api/menu/all");
-      if (data.success) setMenus(data.menuItems);
+
+      if (data.success) {
+        setMenus(data.menuItems);
+      }
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching menus:", error);
     }
   };
 
   /* ---------------- CART ---------------- */
+
   const fetchCartData = async () => {
     try {
       const { data } = await api.get("/api/cart/get");
-      if (data.success) setCart(data.cart);
+
+      if (data.success) {
+        setCart(data.cart);
+      }
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching cart:", error);
     }
   };
 
@@ -77,12 +101,14 @@ const AppContextProvider = ({ children }) => {
   };
 
   /* ---------------- DERIVED STATE ---------------- */
+
   useEffect(() => {
     if (cart?.items) {
       const total = cart.items.reduce(
         (sum, item) => sum + item.menuItem.price * item.quantity,
         0
       );
+
       setTotalPrice(total);
     }
   }, [cart]);
@@ -91,33 +117,34 @@ const AppContextProvider = ({ children }) => {
     cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
   /* ---------------- INITIAL LOAD ---------------- */
+
   useEffect(() => {
     isAuth();
     fetchCategories();
     fetchMenus();
-    fetchCartData();
+      fetchCartData();
   }, []);
 
   return (
     <AppContext.Provider
       value={{
-        navigate,
-        loading,
-        setLoading,
-        user,
-        setUser,
-        admin,
-        setAdmin,
+    navigate,
+    loading,
+    setLoading,
+    user,
+    setUser,
+    admin,
+    setAdmin,
         axios: api, // ✅ ADD THIS
-        categories,
-        menus,
-        cart,
-        cartCount,
-        totalPrice,
-        fetchMenus,
-        fetchCategories,
-        fetchCartData,
-        addToCart,
+    categories,
+    menus,
+    cart,
+    cartCount,
+    totalPrice,
+    fetchMenus,
+    fetchCategories,
+    fetchCartData,
+    addToCart,
       }}
     >
 
