@@ -6,6 +6,15 @@
     including authentication, authorization, testing, CI/CD, logging, debugging,
     and deployment.
 
+## Key Highlights
+- JWT Authentication + Role-Based Access (RBAC)
+- Inventory & Menu Management (Admin Panel)
+- Order Lifecycle System (Pending → On the Way → Completed)
+- Tested Backend (Jest + Supertest with CI/CD pipeline)
+- Centralized Logging using Winston
+- Cloudinary Integration for media uploads
+- Deployed with production-ready configs
+
 ## frontend:
   ### tech_stack:
     - React.js
